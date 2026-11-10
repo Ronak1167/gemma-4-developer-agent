@@ -1,0 +1,23 @@
+# Byte-compiled / optimized files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Large archives and binaries
+*.tgz
+*.tar.gz
+*.whl
+
+# Staging directories
+dist/baseline_dataset_version_2/
+dist/kaggle_dataset/
+dist/kaggle_dataset_upload/
+dist/kaggle_dataset_optimized_upload/
+dist/kaggle_dataset_final/
+
+# Logs and environment
+*.log
+.nmem/
+.DS_Store
+Thumbs.db

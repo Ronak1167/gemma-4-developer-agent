@@ -1,0 +1,53 @@
+# agent.yaml — Gemma 4 Developer Agent Competition Baseline
+# =============================================================================
+# VERIFIED model identifiers (source: Kaggle Overview page)
+# STATUS: BASELINE READY (Phase 2) — Verified against HARNESS_README.md
+# =============================================================================
+#
+# yaml-language-server: $schema=https://raw.githubusercontent.com/google/adk-python/refs/heads/main/src/google/adk/agents/config_schemas/AgentConfig.json
+
+name: gemma4_swe_agent
+description: "Minimal SWE baseline agent for the Gemma 4 Developer Agent Competition"
+
+# -----------------------------------------------------------------------------
+# MODEL — Choose exactly ONE. All identifiers are case-sensitive.
+# VERIFIED against: https://www.kaggle.com/competitions/gemma-4-developer-agent/overview
+#
+#   gemma-4-31b-it-qat-w4a16-ct   30.7B params · 256K context · flagship
+#   gemma-4-12b-it-qat-w4a16-ct   11.95B params · 256K context · balanced  <-- ACTIVE
+#   gemma-4-e4b-it-qat-w4a16-ct   4.5B eff / 8B total · 128K · bonus eligible
+#   gemma-4-e2b-it-qat-w4a16-ct   2.3B eff / 5.1B total · 128K · bonus eligible
+# -----------------------------------------------------------------------------
+model: gemma-4-12b-it-qat-w4a16-ct
+
+# -----------------------------------------------------------------------------
+# SYSTEM INSTRUCTION
+# Include directive resolves relative to this file's directory (VERIFIED — S1, S4)
+# No path traversal (../) permitted (VERIFIED — S1)
+# -----------------------------------------------------------------------------
+instruction: !include prompts/system.md
+
+# -----------------------------------------------------------------------------
+# HARNESS-PROVIDED TOOLS
+# All tool names VERIFIED against Kaggle Overview page.
+# Signatures are documented in reports/phase-1-5-verification.md Appendix A.
+# DO NOT add tools not in this list (unless using skills/ with run_skill_script).
+# -----------------------------------------------------------------------------
+tools:
+  - run_command         # run_command(command: str) -> str
+  - submit_patch        # submit_patch() -> str
+  - get_status          # get_status() -> str  [budget + patch status, NOT git diff]
+  - read_file           # read_file(filepath, start_line?, end_line?) -> str  [1-indexed]
+  - edit_file           # edit_file(filepath, old_string, new_string, allow_multiple=False) -> str
+  - write_file          # write_file(filepath, content) -> str  [creates parent dirs]
+  - get_code_neighbors  # get_code_neighbors(node, edge_type?, max_neighbors=50) -> str
+  - search_similar_code # search_similar_code(query, k=10) -> str
+  - get_code_subgraph   # get_code_subgraph(nodes: list[str]) -> str  [LIST input, no depth]
+
+# -----------------------------------------------------------------------------
+# SAMPLING CONFIGURATION
+# Verified against starter/sample_submission/agent.yaml line 18
+# and HARNESS_README.md Section 2.4.
+# -----------------------------------------------------------------------------
+generate_content_config: !include configs/sampling.yaml
+

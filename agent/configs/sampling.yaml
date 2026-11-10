@@ -1,0 +1,8 @@
+# Realized sampling configuration: 4096 output headroom with 1024 thinking budget
+# to prevent length truncation while thinking, with stripped thoughts between turns.
+temperature: 0.2
+top_p: 0.95
+max_output_tokens: 4096
+thinking_config:
+  thinking_budget: 1024
+  include_thoughts: false

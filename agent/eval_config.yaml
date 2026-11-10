@@ -1,0 +1,6 @@
+# Per-task limits; prompt enforces early patch submission.
+evaluation:
+  timeout_seconds: 300
+  max_tool_calls: 28
+  max_time_minutes: 5
+  max_turns: 200
