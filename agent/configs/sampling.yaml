@@ -1,8 +1,9 @@
-# Realized sampling configuration: 4096 output headroom with 1024 thinking budget
-# to prevent length truncation while thinking, with stripped thoughts between turns.
-temperature: 0.2
+# Realized sampling configuration: 8192 output headroom with 2048 thinking budget
+# for gemma-4-31b — larger model benefits from deeper per-turn reasoning.
+# Thoughts are stripped between turns (include_thoughts: false) to prevent ballooning.
+temperature: 0.1
 top_p: 0.95
-max_output_tokens: 4096
+max_output_tokens: 8192
 thinking_config:
-  thinking_budget: 1024
+  thinking_budget: 2048
   include_thoughts: false

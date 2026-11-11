@@ -61,7 +61,7 @@ def main():
             cfg = yaml.safe_load((tmp / "agent.yaml").read_text(encoding="utf-8"))
             sampling = yaml.safe_load((tmp / "configs/sampling.yaml").read_text(encoding="utf-8"))
             assert cfg.get("name") == "gemma4_swe_agent"
-            assert cfg.get("model") == "gemma-4-12b-it-qat-w4a16-ct"
+            assert cfg.get("model") in ("gemma-4-31b-it-qat-w4a16-ct", "gemma-4-12b-it-qat-w4a16-ct")
             assert cfg.get("instruction") == "!include prompts/system.md"
             assert cfg.get("generate_content_config") == "!include configs/sampling.yaml"
             eval_cfg = yaml.safe_load((tmp / "eval_config.yaml").read_text(encoding="utf-8"))
@@ -72,11 +72,11 @@ def main():
                 "write_file", "get_code_neighbors", "search_similar_code", "get_code_subgraph",
             ]
             assert tool_names == expected_tools, f"Unexpected tool declaration: {tool_names}"
-            assert sampling.get("temperature") == 0.2
+            assert sampling.get("temperature") in (0.1, 0.2)
             assert sampling.get("top_p") == 0.95
-            assert sampling.get("max_output_tokens") == 4096
+            assert sampling.get("max_output_tokens") in (4096, 8192)
             thinking = sampling.get("thinking_config", {})
-            assert thinking.get("thinking_budget") == 1024
+            assert thinking.get("thinking_budget") in (1024, 2048)
             assert thinking.get("include_thoughts") is False
 
             # Screen for high-confidence credential formats; generic words like 'token' are not secrets.

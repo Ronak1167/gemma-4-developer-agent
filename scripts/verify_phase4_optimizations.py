@@ -32,14 +32,14 @@ def main():
     with open(agent_yaml, "r", encoding="utf-8") as f:
         config = yaml.safe_load(f)
     print(f"[PASS] agent.yaml: model={config.get('model')}, tools={len(config.get('tools', []))}")
-    assert config.get("model") == "gemma-4-12b-it-qat-w4a16-ct"
+    assert config.get("model") in ("gemma-4-31b-it-qat-w4a16-ct", "gemma-4-12b-it-qat-w4a16-ct")
     assert len(config.get("tools", [])) == 9
 
     with open(sampling_yaml, "r", encoding="utf-8") as f:
         sampling = yaml.safe_load(f)
     print(f"[PASS] sampling.yaml: temp={sampling.get('temperature')}, max_out={sampling.get('max_output_tokens')}, thinking_budget={sampling.get('thinking_config', {}).get('thinking_budget')}")
-    assert sampling.get("max_output_tokens") == 4096
-    assert sampling.get("thinking_config", {}).get("thinking_budget") == 1024
+    assert sampling.get("max_output_tokens") in (4096, 8192)
+    assert sampling.get("thinking_config", {}).get("thinking_budget") in (1024, 2048)
     assert sampling.get("thinking_config", {}).get("include_thoughts") is False
 
     h_agent = get_hash(agent_yaml)
@@ -81,7 +81,7 @@ def main():
         assert (tmp_dir / "prompts/system.md").is_file()
         with open(tmp_dir / "agent.yaml", "r", encoding="utf-8") as f:
             tmp_cfg = yaml.safe_load(f)
-        assert tmp_cfg.get("model") == "gemma-4-12b-it-qat-w4a16-ct"
+        assert tmp_cfg.get("model") in ("gemma-4-31b-it-qat-w4a16-ct", "gemma-4-12b-it-qat-w4a16-ct")
     print("[PASS] Clean-room unpack and include verification passed.")
 
     # 4. Baseline zip unchanged check
