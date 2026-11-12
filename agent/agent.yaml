@@ -13,8 +13,8 @@ description: "Minimal SWE baseline agent for the Gemma 4 Developer Agent Competi
 # MODEL — Choose exactly ONE. All identifiers are case-sensitive.
 # VERIFIED against: https://www.kaggle.com/competitions/gemma-4-developer-agent/overview
 #
-#   gemma-4-31b-it-qat-w4a16-ct   30.7B params · 256K context · flagship
-#   gemma-4-12b-it-qat-w4a16-ct   11.95B params · 256K context · balanced  <-- ACTIVE
+#   gemma-4-31b-it-qat-w4a16-ct   30.7B params · 256K context · flagship  <-- ACTIVE
+#   gemma-4-12b-it-qat-w4a16-ct   11.95B params · 256K context · balanced
 #   gemma-4-e4b-it-qat-w4a16-ct   4.5B eff / 8B total · 128K · bonus eligible
 #   gemma-4-e2b-it-qat-w4a16-ct   2.3B eff / 5.1B total · 128K · bonus eligible
 # -----------------------------------------------------------------------------

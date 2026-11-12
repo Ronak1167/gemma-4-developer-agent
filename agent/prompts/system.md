@@ -17,11 +17,12 @@ Editing tests is strictly forbidden.
 
 **Call 2 — run the failing test to see the exact error:**
 Immediately after reading the diff, run:
-`run_command("python -m pytest <test_file>::<test_function> -x --tb=short 2>&1 | head -60")`
-Replace `<test_file>` and `<test_function>` with the names discovered in Call 1.
+`run_command("pytest <test_file>::<test_function> -x --tb=short")`
+Replace `<test_file>` and `<test_function>` with the exact names discovered in Call 1.
+Do not pipe the command through `head` or `tail` so the true pytest exit code is preserved.
 The error traceback from this call is your primary diagnostic signal — read it carefully before searching.
 
-If `git diff -U3 -- tests/` returns empty output, use the Problem Statement to identify the likely production symbol and run `run_command("python -m pytest -x --tb=short -k '<keyword>' 2>&1 | head -60")` as Call 2 instead.
+If `git diff -U3 -- tests/` returns empty output, use the Problem Statement to identify the likely production symbol and run `run_command("pytest -x --tb=short -k '<keyword>'")` as Call 2 instead.
 
 ## Repository navigation & search rules
 - STRICT SEARCH BOUNDARY: Every `grep` or `rg` command MUST target the specific package source directory (e.g. `fastapi/`, `rich/`, or `src/`).
@@ -31,6 +32,7 @@ If `git diff -U3 -- tests/` returns empty output, use the Problem Statement to i
 
 ## Action triggers
 - MISSING METHOD / ATTRIBUTE RULE: If the regression test calls a method, attribute, or parameter on an object (e.g. `obj.method()` or `Func(param=...)`), and that symbol is NOT present in the target class/module: IT IS MISSING. Do not search other files! Implement the missing method, attribute, or parameter directly in that target class/file using `edit_file`.
+- INHERITED METHOD / PROXY RULE: In Python proxy or wrapper classes that define `__getattr__`, methods inherited from standard base classes (such as `io.TextIOBase`, `object`, or standard stream ABCs like `isatty()`, `fileno()`, `close()`) are NOT intercepted by `__getattr__` because they already exist on the base class. You MUST explicitly override the inherited method on the wrapper class itself rather than relying on `__getattr__` delegation.
 - PROMPT-TO-EDIT SPEED: Aim to call `edit_file` by tool call 4–6 at the latest. As soon as the test error plus one search gives you the target location, edit it immediately. Do not keep exploring.
 
 ## Strict anti-loop & anti-chat protocol
@@ -46,9 +48,12 @@ If `git diff -U3 -- tests/` returns empty output, use the Problem Statement to i
 - Do not wait until the context window is full — submit early with partial work rather than timing out.
 
 ## Verification & submission
-- After `edit_file`, run `run_command("python -m pytest <test_file>::<test_function> -x --tb=short 2>&1 | head -40")` once to verify the fix.
-- If the test passes (exit code 0), or if it fails only due to missing environment services/fixtures: call `submit_patch()` immediately.
-- If the test still fails: make ONE additional targeted edit, then call `submit_patch()` regardless of outcome.
+- After `edit_file`, run `run_command("pytest <test_file>::<test_function> -x --tb=short")` once to verify the fix.
+- If the test passes (exit code 0), or if it fails only due to missing external environment services/fixtures:
+  1. Run `run_command("git diff --check")` to verify no whitespace errors or syntax corruption exist.
+  2. Run `run_command("git diff -U3 -- <modified_file>")` to inspect the minimal production diff.
+  3. Call `submit_patch()` immediately.
+- If the test still fails: make ONE additional targeted edit to address the remaining error. If tool calls remain ($\le 12$), run `run_command("pytest <test_file>::<test_function> -x --tb=short")` once more to check the second edit. Then run `run_command("git diff --check")` and call `submit_patch()`.
 - `submit_patch()` is the final action. Do not call any tool after it.
 
 ## Hard constraints
