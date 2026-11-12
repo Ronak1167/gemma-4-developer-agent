@@ -11,7 +11,7 @@
 
 ## Abstract
 
-Deploying open-weight autonomous software engineering (SWE) agents on commodity accelerators (e.g., NVIDIA L4 GPUs with INT4 weights) faces three acute bottlenecks: finite context limits, quantization-induced degeneration, and evaluation timeout boundaries. We present an empirical failure analysis and architectural stabilization framework for **Gemma 4 12B** (`gemma-4-12b-it-qat-w4a16-ct`) on the official 129-task SWE-bench benchmark. Through trajectory auditing of diagnostic runs, we formalize a three-part failure taxonomy: *(i)* **Reasoning Token Starvation**, where under-budgeted thinking channels trigger degenerate repetition loops (specifically, 511 repeating delimiter pairs spanning 14,308 characters at trajectory index 12 / ATIF step 13, causing a terminal $30,721 + 2,048 = 32,769 > 32,768$ context overflow); *(ii)* **Conversational Context Ballooning**, where discursive preambles consume $>25\%$ of context capacity; and *(iii)* **Evaluation Wall-Clock Exhaustion**, where 15-minute task budgets allow 48 stalled tasks to exhaust the 12-hour global limit ($48 \times 15\text{m} = 720\text{m}$), causing kernel timeout (`publicScore: null`). To resolve these failure modes, we introduce a bounded-rationality architecture featuring: *(1)* calibrated 1,024-token thinking budgeting with inter-turn thought stripping (`include_thoughts: false`); *(2)* strict action-only turn invariants; *(3)* a two-tier execution envelope (12-call target, 28-call / 5-minute cap) bounding 120-task runtime to 10 hours; and *(4)* Turn-1 regression test diff inspection. Our framework enables timeout-free evaluation, achieving an official Kaggle public score of 0.03.
+Deploying open-weight autonomous software engineering (SWE) agents on commodity accelerators (e.g., NVIDIA L4 GPUs with INT4 weights) faces three acute bottlenecks: finite context limits, quantization-induced degeneration, and evaluation timeout boundaries. We present an empirical failure analysis and architectural stabilization framework for **Gemma 4 12B** (`gemma-4-12b-it-qat-w4a16-ct`) on the official 129-task SWE-bench benchmark. Through trajectory auditing of diagnostic runs, we formalize a three-part failure taxonomy: *(i)* **Reasoning Token Starvation**, where under-budgeted thinking channels trigger degenerate repetition loops (specifically, 511 repeating delimiter pairs spanning 14,308 characters at trajectory index 12 / ATIF step 13, causing a terminal $30,721 + 2,048 = 32,769 > 32,768$ context overflow); *(ii)* **Conversational Context Ballooning**, where discursive preambles consume $>25\%$ of context capacity; and *(iii)* **Evaluation Wall-Clock Exhaustion**, where uncalibrated 15-minute diagnostic limits allow 48 stalled tasks to exhaust the 12-hour global limit ($48 \times 15\text{m} = 720\text{m}$), causing kernel timeout (`publicScore: null`). To resolve these failure modes, we introduce a bounded-rationality architecture featuring: *(1)* calibrated 1,024-token thinking budgeting with inter-turn thought stripping (`include_thoughts: false`); *(2)* strict action-only turn invariants; *(3)* a two-tier execution envelope (12-call target, 28-call / 5-minute cap) bounding 120-task runtime to 10 hours; and *(4)* Turn-1 regression test diff inspection. Our framework enables timeout-free evaluation, achieving an official Kaggle public score of 0.03.
 
 ---
 
@@ -38,7 +38,7 @@ SWE-bench (Jimenez et al., 2024) shifted code evaluation from isolated function 
 Chain-of-thought prompting (Wei et al., 2022; Wang et al., 2023) and ReAct-style reasoning channels (`<|channel>thought`; Yao et al., 2023) improve deduction but introduce novel failure modes. How test-time reasoning interacts with multi-turn tool trajectories under finite context limits remains underexplored; unstripped thoughts rapidly saturate memory over extended turns.
 
 ### 2.3 Quantized Model Deployment
-Deploying 12B models within single-accelerator memory footprints relies on INT4 Quantization-Aware Training (QAT; Jacob et al., 2018; Dettmers et al., 2023). While preserving standard benchmark perplexity, 4-bit quantization alters multi-turn instruction adherence, increasing vulnerability to degenerate repetition cycles under token starvation.
+Deploying 12B models within constrained accelerator memory footprints relies on INT4 Quantization-Aware Training (QAT; Jacob et al., 2018; Dettmers et al., 2023). While preserving standard benchmark perplexity, 4-bit quantization alters multi-turn instruction adherence, increasing vulnerability to degenerate repetition cycles under token starvation.
 
 ---
 
@@ -78,7 +78,7 @@ Through fine-grained trajectory auditing of selected execution traces from compe
         v                       v                       v
 1. REASONING STARVATION   2. CONTEXT BALLOONING   3. WALL-CLOCK TIMEOUT
 +---------------------+   +---------------------+ +---------------------+
-| Budget <= 256 toks  |   | 280 tok preambles   | | 15 min default/task |
+| Budget <= 256 toks  |   | 280 tok preambles   | | 15 min diagnostic cap|
 | 511 delimiter loops |   | Displaces issue     | | 48 tasks = 12 hours |
 | Context overflow!   |   | context (>25%)      | | SIGKILL: Score null |
 +---------------------+   +---------------------+ +---------------------+
@@ -97,7 +97,7 @@ Gemma 4 12B generates internal chain-of-thought tokens within dedicated delimite
 This triggered a terminal `ContextWindowExceededError`, aborting the task without patch generation.
 
 ### 4.2 Failure Mode 2: Conversational Context Ballooning
-Standard prompts encourage discursive commentary. We isolated and tokenized the natural language preambles preceding tool calls across a diagnostic sample of 42 baseline turns sampled from competition diagnostic failure traces (`trace_fastapi_15589.json`, `trace_rich_4077.json`) using the official Gemma 4 SentencePiece tokenizer (256k vocabulary). 
+Standard prompts encourage discursive commentary. We isolated and tokenized the natural language preambles preceding tool calls across a diagnostic sample of 42 baseline turns sampled from competition diagnostic failure traces (`trace_fastapi_15589.json`, `trace_rich_4077.json`) using the official Gemma 4 SentencePiece tokenizer (256k vocabulary; archived in `scripts/inspect_all_tokens.py`). 
 
 These isolated pre-action preambles averaged **280 tokens per turn** (standard deviation = 64). Over a 30-turn trajectory, conversational commentary alone consumes over 8,400 tokens (25.6% of context capacity), while ADK event compaction summaries bloat and displace initial issue descriptions.
 
@@ -262,4 +262,4 @@ Building autonomous developer agents with open-weight models under strict comput
 8. Wang, X., Wei, J., Schuurmans, D., Le, Q., Chi, E., Narang, S., Chowdhery, A., & Zhou, D. (2023). *Self-Consistency Improves Chain of Thought Reasoning in Language Models.* ICLR.
 9. Gauthier, P. (2024). *Aider: AI Pair Programming in Your Terminal.* https://aider.chat.
 10. Chen, M., Tworek, J., Jun, H., Yuan, Q., Pinto, H. P. d. O., Kaplan, J., et al. (2021). *Evaluating Large Language Models Trained on Code.* arXiv:2107.03374.
-11. Simon, H. A. (1955). *A Behavioral Model of Rational Choice.* The Quarterly Journal of Economics, 69(1), 99–118.
+11. Simon, H. A. (1955). *A Behavioral Model of Rational Choice.* The Quarterly Journal of Economics, 69(1), 99-118.

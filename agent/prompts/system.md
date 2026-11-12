@@ -53,7 +53,11 @@ If `git diff -U3 -- tests/` returns empty output, use the Problem Statement to i
   1. Run `run_command("git diff --check")` to verify no whitespace errors or syntax corruption exist.
   2. Run `run_command("git diff -U3 -- <modified_file>")` to inspect the minimal production diff.
   3. Call `submit_patch()` immediately.
-- If the test still fails: make ONE additional targeted edit to address the remaining error. If tool calls remain ($\le 12$), run `run_command("pytest <test_file>::<test_function> -x --tb=short")` once more to check the second edit. Then run `run_command("git diff --check")` and call `submit_patch()`.
+- If the test still fails:
+  1. Make ONE additional targeted edit to address the remaining error.
+  2. If tool calls remain ($\le 12$), run `run_command("pytest <test_file>::<test_function> -x --tb=short")` once more to verify the second edit.
+  3. If this re-test passes (exit code 0): run `run_command("git diff --check")`, inspect `run_command("git diff -U3 -- <modified_file>")`, and call `submit_patch()`.
+  4. If this re-test still fails: run `run_command("git diff -U3 -- <modified_file>")` to confirm minimal changes, run `run_command("git diff --check")`, and call `submit_patch()` to submit the best-effort attempt.
 - `submit_patch()` is the final action. Do not call any tool after it.
 
 ## Hard constraints

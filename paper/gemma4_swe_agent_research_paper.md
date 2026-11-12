@@ -2,7 +2,7 @@
 
 **Authors:** Ronak Jain  
 **Affiliation:** Independent Researcher  
-**Track:** Google – The Gemma 4 Developer Agent Paper Track  
+**Track:** Google - The Gemma 4 Developer Agent Paper Track  
 **Competition Hub:** [Google - The Gemma 4 Developer Agent Paper Track](https://www.kaggle.com/competitions/gemma-4-developer-agent-paper)  
 **Public Kaggle Notebook:** [ronak1167/gemma-4-swe-agent-final-submission](https://www.kaggle.com/code/ronak1167/gemma-4-swe-agent-final-submission)  
 **Verified Candidate Package:** SHA-256 `82a9478da291d5899e472b5b405156167b785e50c91ced9dadb8cf58a83d64f3`  
@@ -11,7 +11,7 @@
 
 ## Abstract
 
-Deploying open-weight autonomous software engineering (SWE) agents on single accelerators (e.g., NVIDIA L4 GPUs with INT4 weights) faces severe bottlenecks: finite context limits, quantization-induced degeneration, and evaluation timeout boundaries. We present an empirical failure analysis and architectural stabilization framework for **Gemma 4 12B** (`gemma-4-12b-it-qat-w4a16-ct`) in the context of the official 129-task SWE-bench benchmark. Through trajectory auditing of diagnostic runs alongside structural analysis of the 129-task public manifest, we establish a three-part failure taxonomy: *(i)* **Reasoning Token Starvation**, where under-budgeted thinking channels trigger degenerate repetition loops (specifically, 511 repeating `<|channel>thought` delimiter pairs spanning 14,308 characters at zero-based trajectory index 12 / ATIF step ID 13 within a 21-step trajectory, triggering a terminal $30,721 + 2,048 = 32,769 > 32,768$ context overflow); *(ii)* **Conversational Context Ballooning**, where multi-turn discursive preambles consume over $25\%$ of context capacity before event compaction triggers; and *(iii)* **Evaluation Wall-Clock Exhaustion**, where default 15-minute per-task limits allow 48 stalled tasks to consume Kaggle's entire 12-hour global limit ($48 \times 15\text{m} = 720\text{m}$), causing kernel termination (`publicScore: null`). To overcome these vulnerabilities, we introduce a bounded-rationality architecture featuring: *(1)* a calibrated 1,024-token thinking budget with inter-turn thought stripping (`include_thoughts: false`); *(2)* strict action-only turn invariants; *(3)* a two-tier execution envelope (12-call prompt target with a 28-call / 5-minute hard harness cap) bounding 120-task execution to 10 hours; and *(4)* Turn-1 regression test diff inspection. Our work provides an empirically grounded blueprint for stabilizing open-weight developer agents.
+Deploying open-weight autonomous software engineering (SWE) agents on single accelerators (e.g., NVIDIA L4 GPUs with INT4 weights) faces severe bottlenecks: finite context limits, quantization-induced degeneration, and evaluation timeout boundaries. We present an empirical failure analysis and architectural stabilization framework for **Gemma 4 12B** (`gemma-4-12b-it-qat-w4a16-ct`) in the context of the official 129-task SWE-bench benchmark. Through trajectory auditing of diagnostic runs alongside structural analysis of the 129-task public manifest, we establish a three-part failure taxonomy: *(i)* **Reasoning Token Starvation**, where under-budgeted thinking channels trigger degenerate repetition loops (specifically, 511 repeating `<|channel>thought` delimiter pairs spanning 14,308 characters at zero-based trajectory index 12 / ATIF step ID 13 within a 21-step trajectory, triggering a terminal $30,721 + 2,048 = 32,769 > 32,768$ context overflow); *(ii)* **Conversational Context Ballooning**, where multi-turn discursive preambles consume over $25\%$ of context capacity before event compaction triggers; and *(iii)* **Evaluation Wall-Clock Exhaustion**, where uncalibrated 15-minute diagnostic limits allow 48 stalled tasks to consume Kaggle's entire 12-hour global limit ($48 \times 15\text{m} = 720\text{m}$), causing kernel termination (`publicScore: null`). To overcome these vulnerabilities, we introduce a bounded-rationality architecture featuring: *(1)* a calibrated 1,024-token thinking budget with inter-turn thought stripping (`include_thoughts: false`); *(2)* strict action-only turn invariants; *(3)* a two-tier execution envelope (12-call prompt target with a 28-call / 5-minute hard harness cap) bounding 120-task execution to 10 hours; and *(4)* Turn-1 regression test diff inspection. Our work provides an empirically grounded blueprint for stabilizing open-weight developer agents.
 
 ---
 
@@ -19,11 +19,11 @@ Deploying open-weight autonomous software engineering (SWE) agents on single acc
 
 Autonomous software engineering (SWE) agents interactively resolve defects: exploring codebases, reproducing failures via regression tests, and synthesizing minimal patches (Jimenez et al., 2024). While closed models leverage 100k+ token windows, deploying open-weight models under competition constraints imposes strict boundaries:
 1. **Offline Execution:** Zero internet access during evaluation; dependencies resolve against local wheelhouses.
-2. **Constrained Inference:** Execution across NVIDIA L4 GPUs hosting quantized Gemma 4 (`gemma-4-12b-it-qat-w4a16-ct`; Google DeepMind, 2024; Kaggle, 2026). While the competition registry permits four base variants (`gemma-4-31b`, `12b`, `e4b`, `e2b`), we intentionally target the 12B model—the balanced intermediate tier where memory constraints (~1.8 GB VRAM/GPU) and reasoning failure modes intersect most acutely.
+2. **Constrained Inference:** Execution across NVIDIA L4 GPUs hosting quantized Gemma 4 (`gemma-4-12b-it-qat-w4a16-ct`; Google DeepMind, 2024; Kaggle, 2026). While the competition registry permits four base variants (`gemma-4-31b`, `12b`, `e4b`, `e2b`), we intentionally target the 12B model - the balanced intermediate tier where memory constraints (~1.8 GB VRAM/GPU) and reasoning failure modes intersect most acutely.
 3. **Finite Context Window:** A hard 32,768 ($32\text{k}$) token capacity.
 4. **Global Wall-Clock Ceiling:** A strict 12-hour ($720\text{m}$) limit covering container setup and evaluation across up to 120 hidden tasks.
 
-Uncalibrated baselines fail under these bounds (e.g., submission `58080103` timed out with `publicScore: null`). Our central thesis is that **open-weight SWE agents require bounded rationality**: token expenditure, reasoning channels, and execution envelopes must be mathematically bounded to maintain multi-turn stability.
+Uncalibrated baselines fail under these bounds (e.g., submission `58080103` timed out with `publicScore: null`). Our central thesis is that **open-weight SWE agents require bounded rationality** (Simon, 1955): token expenditure, reasoning channels, and execution envelopes must be mathematically bounded to maintain multi-turn stability.
 
 ### Contributions
 - **Empirical Failure Taxonomy:** Formally characterizing three distinct failure modes in quantized reasoning agents on SWE-bench: reasoning starvation loops, conversational ballooning, and wall-clock exhaustion.
@@ -42,14 +42,14 @@ SWE-bench (Jimenez et al., 2024) shifted evaluation from function synthesis (Che
 Chain-of-thought scaling (Wei et al., 2022; Wang et al., 2023) and ReAct-style reasoning channels (`<|channel>thought`; Yao et al., 2023) improve deduction but introduce novel failure modes. How test-time reasoning interacts with multi-turn tool-calling trajectories under finite context limits remains underexplored; unstripped thoughts rapidly saturate memory over extended turns.
 
 ### 2.3 Quantized Model Deployment
-Deploying 12B models within single-accelerator memory footprints relies on INT4 Quantization-Aware Training (QAT; Jacob et al., 2018; Dettmers et al., 2023). While preserving standard benchmark perplexity, 4-bit quantization alters multi-turn instruction adherence, increasing vulnerability to degenerate repetition cycles under token starvation.
+Deploying 12B models within constrained accelerator memory footprints relies on INT4 Quantization-Aware Training (QAT; Jacob et al., 2018; Dettmers et al., 2023). While preserving standard benchmark perplexity, 4-bit quantization alters multi-turn instruction adherence, increasing vulnerability to degenerate repetition cycles under token starvation.
 
 ---
 
 ## 3. Problem Formulation and System Profile
 
 ### 3.1 Task Formulation
-A defect resolution task is $\mathcal{T} = (\mathcal{R}, \mathcal{I}, \mathcal{S}_{\text{repo}}, \mathcal{P}^*)$, where $\mathcal{R}$ is the repository, $\mathcal{I}$ is the issue description, $\mathcal{S}_{\text{repo}}$ is the base commit, and $\mathcal{P}^*$ is the reference patch.
+A defect resolution task is $\mathcal{T} = (\mathcal{R}, \mathcal{I}, \mathcal{S}_{\text{repo}}, \mathcal{P}^*)$, where $\mathcal{R}$ is the repository, $\mathcal{I}$ is the issue description, $\mathcal{S}_{\text{repo}}$ is the base commit, and $\mathcal{P}^*$ is the gold reference patch (strictly held out for the benchmark evaluation oracle and inaccessible to the agent).
 
 The agent interacts over discrete turns $t \in \{1, \dots, T\}$. At turn $t$, given history $H_t$, the agent emits action $a_t$ invoking one of nine harness tools:
 $$\mathcal{A} = \{\texttt{run\_command}, \texttt{submit\_patch}, \texttt{get\_status}, \texttt{read\_file}, \texttt{edit\_file}, \texttt{write\_file}, \texttt{get\_code\_neighbors}, \texttt{search\_similar\_code}, \texttt{get\_code\_subgraph}\}$$
@@ -57,11 +57,21 @@ $$\mathcal{A} = \{\texttt{run\_command}, \texttt{submit\_patch}, \texttt{get\_st
 Interaction terminates upon calling $\texttt{submit\_patch}()$ or exhausting the task budget. Evaluation is binary:
 $$\text{Score}(\mathcal{T}) = \mathbb{I}[\text{Eval}(\mathcal{S}_{\text{repo}} \oplus \mathcal{P}_{\text{agent}}) = \text{PASS}]$$
 
+We formalize defect resolution under bounded rationality as a constrained policy optimization problem:
+$$\max_\pi \mathbb{E}_{\mathcal{T} \sim \mathcal{D}}\left[\sum_{i=1}^{M} \mathbb{I}(\text{Eval}_i(\mathcal{S}_{\text{repo}}^{(i)} \oplus \mathcal{P}_{\text{agent}}^{(i)}) = \text{PASS})\right]$$
+subject to operational and physical bounds:
+$$\begin{aligned}
+t_i &\le \tau_{\text{task}} = 300\text{ seconds (5-minute per-task session limit)} \\
+n_i &\le N_{\text{tools}} = 28\text{ tool calls per task} \\
+L_{\text{prompt},i} + L_{\text{output},i} &\le W_{\max} = 32,768\text{ tokens (serving context ceiling)} \\
+\sum_{i=1}^{M} t_i + t_{\text{setup}} &\le T_{\text{global}} = 720\text{ minutes (12-hour global execution cap)}
+\end{aligned}$$
+
 ### 3.2 Evaluation Environment
 All experiments were conducted under the competition execution profile:
-- **Accelerator:** NVIDIA L4 GPU cluster (24 GB GDDR6 per GPU).
+- **Accelerator:** 4 x NVIDIA L4 GPU cluster (24 GB GDDR6 per GPU, 96 GB aggregate VRAM).
 - **Inference Engine & Model:** Agent Development Kit (ADK) and vLLM serving `gemma-4-12b-it-qat-w4a16-ct` (INT4 QAT). While `gemma-4-31b` is the starter default, 12B is one of four officially permitted competition models (`ALLOWED_MODEL_NAMES`), selected here for focused study of bounded-rationality failure modes.
-- **Context Capacity:** $W_{\max} = 32,768\text{ tokens}$.
+- **Context Capacity:** $W_{\max} = 32,768\text{ tokens}$ (enforced by the competition vLLM/ADK serving profile; native architecture supports 256k).
 - **Global Evaluation Cap:** $T_{\text{global}} \le 12\text{ hours}$ ($720\text{ minutes}$) across $M \approx 120$ hidden evaluation tasks.
 
 ---
@@ -84,7 +94,7 @@ flowchart TD
     C1 --> C2["280 tok/turn consumes 25.6% window"]
     C2 --> C3["Event compaction displaces issue description"]
 
-    D --> D1["15 min/task default timeout x 120 tasks"]
+    D --> D1["15 min/task diagnostic cap x 120 tasks"]
     D1 --> D2["48 looping tasks exhaust 12h global limit"]
     D2 --> D3["Kaggle SIGKILL: publicScore null"]
 ```
@@ -97,12 +107,12 @@ Gemma 4 12B generates internal chain-of-thought tokens within dedicated delimite
    This triggered a terminal `ContextWindowExceededError`, aborting the task without patch generation.
 
 ### 4.2 Failure Mode 2: Conversational Context Ballooning
-Standard prompts encourage discursive commentary. We isolated and tokenized the natural language preambles preceding tool calls across 42 baseline turns sampled from diagnostic traces (`trace_fastapi_15589.json`, `trace_rich_4077.json`) using the official Gemma 4 SentencePiece tokenizer (256k vocabulary). These isolated pre-action preambles averaged $280\text{ tokens}$ per turn ($\sigma = 64$). Over a 30-turn trajectory, conversational commentary alone consumes $>8,400\text{ tokens}$ ($25.6\%$ of context capacity), while ADK event compaction summaries bloat and displace initial issue descriptions.
+Standard prompts encourage discursive commentary. We isolated and tokenized the natural language preambles preceding tool calls across a diagnostic sample of 42 baseline turns sampled from competition diagnostic failure traces (`trace_fastapi_15589.json`, `trace_rich_4077.json`) using the official Gemma 4 SentencePiece tokenizer (256k vocabulary; archived in `scripts/inspect_all_tokens.py`). These isolated pre-action preambles averaged $280\text{ tokens}$ per turn ($\sigma = 64$). Over a 30-turn trajectory, conversational commentary alone consumes $>8,400\text{ tokens}$ ($25.6\%$ of context capacity), while ADK event compaction summaries bloat and displace initial issue descriptions.
 
 ### 4.3 Failure Mode 3: Global Evaluation Wall-Clock Exhaustion
-Under default budgets (`max_time_minutes: 15.0`), stalled tasks exhaust 15 minutes. The failure ceiling before global 12-hour timeout ($720\text{m}$) is:
-$$K_{\text{failure}} = \frac{T_{\text{global}}}{\tau_{\text{task}}} = \frac{720\text{ minutes}}{15\text{ minutes/task}} = 48\text{ tasks}$$
-If only 48 of 120 tasks loop, the entire 12-hour budget is consumed ($48 \times 15\text{m} = 720\text{m}$), triggering container termination (`publicScore: null`).
+Under unconstrained diagnostic budgets (where earlier candidate configurations explicitly set `max_time_minutes: 15.0`), stalled tasks exhaust 15 minutes before harness termination. If container setup and wheelhouse extraction consume $s$ minutes, the maximum number of stalled tasks before triggering the global 12-hour timeout ($720\text{m}$) is:
+$$K_{\text{failure}} = \left\lfloor \frac{720 - s}{15} \right\rfloor \le 48\text{ tasks}$$
+If 48 of 120 tasks loop, the entire 12-hour budget is consumed ($48 \times 15\text{m} = 720\text{m}$), triggering container termination (`publicScore: null`), as observed in submission `58080103`. Bounding $\tau_{\text{task}} \le 5.0\text{m}$ directly precludes this failure mode.
 
 ---
 
@@ -129,11 +139,11 @@ Crucially, **`include_thoughts: false`** strips `<|channel>thought` tokens from 
 We re-engineered `prompts/system.md` into an operational grammar enforcing the **Action-Only Invariant**:
 > *"The assistant must emit ONLY tool invocations or `submit_patch()`. Natural language preambles, discursive commentary, and apologies are strictly forbidden."*
 
-Comparative tokenization across the same 42 audited turns clarified that total conversational assistant turns—combining the $280$-token discursive preamble with tool syntax and parameters—averaged $480\text{ tokens}$ ($\sigma = 82$). When enforcing action-only invariants to strip natural language preambles and retain solely tool-invocation syntax (counterfactually reconstructed and corroborated via prompt dry-runs), mean assistant turn context consumption dropped from $480\text{ tokens}$ to $112\text{ tokens}$ ($\sigma = 24$). This preserves critical context headroom for source diffs and test traces.
+Comparative tokenization across the same 42 audited turns clarified that total conversational assistant turns - combining the $280$-token discursive preamble with tool syntax and parameters - averaged $480\text{ tokens}$ ($\sigma = 82$). When enforcing action-only invariants to strip natural language preambles and retain solely tool-invocation syntax (counterfactually reconstructed and corroborated via prompt dry-runs), mean assistant turn context consumption dropped from $480\text{ tokens}$ to $112\text{ tokens}$ ($\sigma = 24$). This preserves critical context headroom for source diffs and test traces.
 
 ### 5.3 Two-Tier Execution Envelope
 We calibrated execution across two synchronized tiers:
-1. **Prompt Target (`prompts/system.md`):** Directs the agent to spend at most 12 counted tool calls, targeting patch edits by calls 4–6.
+1. **Prompt Target (`prompts/system.md`):** Directs the agent to spend at most 12 counted tool calls, targeting patch edits by calls 4-6.
 2. **Harness Boundary (`eval_config.yaml`):** Caps execution at 28 tool calls, 300 seconds (5 minutes), and 200 turns:
 
 ```yaml
@@ -229,13 +239,13 @@ This confirms that unstripped reasoning history and discursive preambles cause s
 ### 6.4 Context Token Growth Dynamics
 We modeled token accumulation across trajectory horizon $t$:
 $$\text{Tokens}(t) = \text{Tokens}_{\text{base}} + t \cdot \bar{\Delta}_{\text{action}} + \sum_{i \in \text{edits}} \text{Size}(\text{diff}_i)$$
-Under action-only invariants with thought stripping, assistant turns add an empirical average of $\bar{\Delta}_{\text{action}} \approx 112\text{ tokens/turn}$. Given a typical baseline prompt $\text{Tokens}_{\text{base}} \approx 3,500\text{ tokens}$ and conservative diff additions, the theoretical upper bound at turn $t = 28$ is modeled at $\text{Tokens}(28) \le 16,500\text{ tokens}$—preserving comfortable headroom below the 32,768 ceiling.
+Under action-only invariants with thought stripping, assistant turns add an empirical average of $\bar{\Delta}_{\text{action}} \approx 112\text{ tokens/turn}$. Given a typical baseline prompt $\text{Tokens}_{\text{base}} \approx 3,500\text{ tokens}$ and conservative diff additions, the theoretical upper bound at turn $t = 28$ is modeled at $\text{Tokens}(28) \le 16,500\text{ tokens}$ - preserving comfortable headroom below the 32,768 ceiling.
 
 ---
 
 ## 7. Determinism, Integrity, and Cross-Platform Packaging
 
-We audited packaging integrity and identified cross-platform zlib divergence: archives uploaded to Kaggle Datasets unpack automatically, and re-zipping yields `bd22384a9f...` on Linux Python 3.12 versus `82a9478da2...` on Windows Python 3.14. Both local archives—`dist/submission.zip` and `dist/submission-final.zip`—are byte-for-byte identical (3,704 bytes each; SHA-256 `82a9478da291d5899e472b5b405156167b785e50c91ced9dadb8cf58a83d64f3`).
+We audited packaging integrity and identified cross-platform zlib divergence: archives uploaded to Kaggle Datasets unpack automatically, and re-zipping yields `bd22384a9f...` on Linux Python 3.12 versus `82a9478da2...` on Windows Python 3.14. Both local archives - `dist/submission.zip` and `dist/submission-final.zip` - are byte-for-byte identical (3,704 bytes each; SHA-256 `82a9478da291d5899e472b5b405156167b785e50c91ced9dadb8cf58a83d64f3`).
 
 Crucially, all archives extract to identical 7,088 uncompressed bytes with matching source digests:
 - `agent.yaml`: `2949364aec51a49ab9288a1f7c18cfca7d65e275bd31d26d98d4f0331e8f6c6b`
@@ -279,7 +289,7 @@ All source code, verification suites, and notebook pipelines are fully open-sour
 ## References
 
 1. Jimenez, C. E., Yang, J., Wettig, A., Yao, S., Pei, K., Press, O., & Narasimhan, K. (2024). *SWE-bench: Can Language Models Resolve Real-World GitHub Issues?* ICLR.
-2. Google DeepMind. (2024). *Gemma: Open Models Based on Gemini Research and Technology.* arXiv:2403.08295. Kaggle. (2026). *Google – The Gemma 4 Developer Agent Competition.* Overview: https://www.kaggle.com/competitions/gemma-4-developer-agent/overview; Kaggle Staff Model Announcement: https://www.kaggle.com/competitions/gemma-4-developer-agent/discussion/748287; Model weights: https://www.kaggle.com/models/google/gemma-4.
+2. Google DeepMind. (2024). *Gemma: Open Models Based on Gemini Research and Technology.* arXiv:2403.08295. Kaggle. (2026). *Google - The Gemma 4 Developer Agent Competition.* Overview: https://www.kaggle.com/competitions/gemma-4-developer-agent/overview; Kaggle Staff Model Announcement: https://www.kaggle.com/competitions/gemma-4-developer-agent/discussion/748287; Model weights: https://www.kaggle.com/models/google/gemma-4.
 3. Yang, J., Jimenez, C. E., Wettig, A., Lieret, K., Yao, S., Narasimhan, K., & Press, O. (2024). *SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering.* arXiv:2405.15793.
 4. Yao, S., Zhao, J., Yu, D., Du, N., Shafran, I., Narasimhan, K., & Cao, Y. (2023). *ReAct: Synergizing Reasoning and Acting in Language Models.* ICLR.
 5. Dettmers, T., Pagnoni, A., Holtzman, A., & Zettlemoyer, L. (2023). *QLoRA: Efficient Finetuning of Quantized LLMs.* NeurIPS; Jacob, B., et al. (2018). *Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference.* CVPR.
@@ -288,3 +298,4 @@ All source code, verification suites, and notebook pipelines are fully open-sour
 8. Wang, X., Wei, J., Schuurmans, D., Le, Q., Chi, E., Narang, S., Chowdhery, A., & Zhou, D. (2023). *Self-Consistency Improves Chain of Thought Reasoning in Language Models.* ICLR.
 9. Gauthier, P. (2024). *Aider: AI Pair Programming in Your Terminal.* https://aider.chat.
 10. Chen, M., Tworek, J., Jun, H., Yuan, Q., Pinto, H. P. d. O., Kaplan, J., et al. (2021). *Evaluating Large Language Models Trained on Code.* arXiv:2107.03374.
+11. Simon, H. A. (1955). *A Behavioral Model of Rational Choice.* The Quarterly Journal of Economics, 69(1), 99-118.
