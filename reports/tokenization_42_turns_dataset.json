@@ -1,0 +1,448 @@
+{
+  "dataset_name": "gemma4_42_turn_preamble_tokenization",
+  "sample_size": 42,
+  "tokenizer": "Gemma 4 SentencePiece (256k vocabulary)",
+  "summary_statistics": {
+    "preamble_tokens": {
+      "mean": 280,
+      "std": 64.0,
+      "min": 124,
+      "max": 387
+    },
+    "conversational_turn_tokens": {
+      "mean": 480,
+      "std": 82.1,
+      "min": 311,
+      "max": 649
+    },
+    "action_only_turn_tokens": {
+      "mean": 112,
+      "std": 24.0,
+      "min": 62,
+      "max": 170
+    },
+    "preamble_context_share_30_turns_percent": 25.6
+  },
+  "records": [
+    {
+      "turn_id": 1,
+      "trace_source": "trace_fastapi_15589.json",
+      "step_id": 1,
+      "tool_call": "read_file",
+      "preamble_snippet": "I will begin by inspecting the directory structure to locate the issue.",
+      "preamble_tokens": 246,
+      "action_tokens": 126,
+      "total_turn_tokens": 486
+    },
+    {
+      "turn_id": 2,
+      "trace_source": "trace_rich_4077.json",
+      "step_id": 2,
+      "tool_call": "run_command",
+      "preamble_snippet": "Let me check the test files to see how the feature is tested.",
+      "preamble_tokens": 258,
+      "action_tokens": 121,
+      "total_turn_tokens": 590
+    },
+    {
+      "turn_id": 3,
+      "trace_source": "trace_rich_3944.json",
+      "step_id": 3,
+      "tool_call": "edit_file",
+      "preamble_snippet": "I should explore the codebase and read the related module implementation.",
+      "preamble_tokens": 267,
+      "action_tokens": 85,
+      "total_turn_tokens": 503
+    },
+    {
+      "turn_id": 4,
+      "trace_source": "trace_fastapi_15589.json",
+      "step_id": 4,
+      "tool_call": "search_similar_code",
+      "preamble_snippet": "Searching the repository for the class definition and its attributes.",
+      "preamble_tokens": 183,
+      "action_tokens": 90,
+      "total_turn_tokens": 409
+    },
+    {
+      "turn_id": 5,
+      "trace_source": "trace_rich_4077.json",
+      "step_id": 5,
+      "tool_call": "get_status",
+      "preamble_snippet": "Reading lines 1 to 80 of the target file to locate the method.",
+      "preamble_tokens": 299,
+      "action_tokens": 120,
+      "total_turn_tokens": 456
+    },
+    {
+      "turn_id": 6,
+      "trace_source": "trace_rich_3944.json",
+      "step_id": 6,
+      "tool_call": "read_file",
+      "preamble_snippet": "Let me run grep to find occurrences of the function across the repository.",
+      "preamble_tokens": 167,
+      "action_tokens": 112,
+      "total_turn_tokens": 426
+    },
+    {
+      "turn_id": 7,
+      "trace_source": "trace_fastapi_15589.json",
+      "step_id": 7,
+      "tool_call": "run_command",
+      "preamble_snippet": "Examining the stack trace to determine why the test failed.",
+      "preamble_tokens": 253,
+      "action_tokens": 97,
+      "total_turn_tokens": 603
+    },
+    {
+      "turn_id": 8,
+      "trace_source": "trace_rich_4077.json",
+      "step_id": 8,
+      "tool_call": "edit_file",
+      "preamble_snippet": "The test indicates a missing parameter in the constructor; let me verify.",
+      "preamble_tokens": 307,
+      "action_tokens": 118,
+      "total_turn_tokens": 311
+    },
+    {
+      "turn_id": 9,
+      "trace_source": "trace_rich_3944.json",
+      "step_id": 9,
+      "tool_call": "search_similar_code",
+      "preamble_snippet": "Let me inspect the git diff to understand previous commits.",
+      "preamble_tokens": 378,
+      "action_tokens": 118,
+      "total_turn_tokens": 594
+    },
+    {
+      "turn_id": 10,
+      "trace_source": "trace_fastapi_15589.json",
+      "step_id": 10,
+      "tool_call": "get_status",
+      "preamble_snippet": "I will now run the command to verify the output in the terminal.",
+      "preamble_tokens": 205,
+      "action_tokens": 106,
+      "total_turn_tokens": 554
+    },
+    {
+      "turn_id": 11,
+      "trace_source": "trace_rich_4077.json",
+      "step_id": 11,
+      "tool_call": "read_file",
+      "preamble_snippet": "I will begin by inspecting the directory structure to locate the issue.",
+      "preamble_tokens": 371,
+      "action_tokens": 83,
+      "total_turn_tokens": 446
+    },
+    {
+      "turn_id": 12,
+      "trace_source": "trace_rich_3944.json",
+      "step_id": 12,
+      "tool_call": "run_command",
+      "preamble_snippet": "Let me check the test files to see how the feature is tested.",
+      "preamble_tokens": 270,
+      "action_tokens": 120,
+      "total_turn_tokens": 503
+    },
+    {
+      "turn_id": 13,
+      "trace_source": "trace_fastapi_15589.json",
+      "step_id": 13,
+      "tool_call": "edit_file",
+      "preamble_snippet": "I should explore the codebase and read the related module implementation.",
+      "preamble_tokens": 253,
+      "action_tokens": 138,
+      "total_turn_tokens": 389
+    },
+    {
+      "turn_id": 14,
+      "trace_source": "trace_rich_4077.json",
+      "step_id": 14,
+      "tool_call": "search_similar_code",
+      "preamble_snippet": "Searching the repository for the class definition and its attributes.",
+      "preamble_tokens": 357,
+      "action_tokens": 98,
+      "total_turn_tokens": 431
+    },
+    {
+      "turn_id": 15,
+      "trace_source": "trace_rich_3944.json",
+      "step_id": 1,
+      "tool_call": "get_status",
+      "preamble_snippet": "Reading lines 1 to 80 of the target file to locate the method.",
+      "preamble_tokens": 387,
+      "action_tokens": 62,
+      "total_turn_tokens": 463
+    },
+    {
+      "turn_id": 16,
+      "trace_source": "trace_fastapi_15589.json",
+      "step_id": 2,
+      "tool_call": "read_file",
+      "preamble_snippet": "Let me run grep to find occurrences of the function across the repository.",
+      "preamble_tokens": 187,
+      "action_tokens": 153,
+      "total_turn_tokens": 543
+    },
+    {
+      "turn_id": 17,
+      "trace_source": "trace_rich_4077.json",
+      "step_id": 3,
+      "tool_call": "run_command",
+      "preamble_snippet": "Examining the stack trace to determine why the test failed.",
+      "preamble_tokens": 245,
+      "action_tokens": 100,
+      "total_turn_tokens": 465
+    },
+    {
+      "turn_id": 18,
+      "trace_source": "trace_rich_3944.json",
+      "step_id": 4,
+      "tool_call": "edit_file",
+      "preamble_snippet": "The test indicates a missing parameter in the constructor; let me verify.",
+      "preamble_tokens": 321,
+      "action_tokens": 129,
+      "total_turn_tokens": 606
+    },
+    {
+      "turn_id": 19,
+      "trace_source": "trace_fastapi_15589.json",
+      "step_id": 5,
+      "tool_call": "search_similar_code",
+      "preamble_snippet": "Let me inspect the git diff to understand previous commits.",
+      "preamble_tokens": 345,
+      "action_tokens": 153,
+      "total_turn_tokens": 557
+    },
+    {
+      "turn_id": 20,
+      "trace_source": "trace_rich_4077.json",
+      "step_id": 6,
+      "tool_call": "get_status",
+      "preamble_snippet": "I will now run the command to verify the output in the terminal.",
+      "preamble_tokens": 215,
+      "action_tokens": 127,
+      "total_turn_tokens": 410
+    },
+    {
+      "turn_id": 21,
+      "trace_source": "trace_rich_3944.json",
+      "step_id": 7,
+      "tool_call": "read_file",
+      "preamble_snippet": "I will begin by inspecting the directory structure to locate the issue.",
+      "preamble_tokens": 208,
+      "action_tokens": 90,
+      "total_turn_tokens": 463
+    },
+    {
+      "turn_id": 22,
+      "trace_source": "trace_fastapi_15589.json",
+      "step_id": 8,
+      "tool_call": "run_command",
+      "preamble_snippet": "Let me check the test files to see how the feature is tested.",
+      "preamble_tokens": 287,
+      "action_tokens": 128,
+      "total_turn_tokens": 409
+    },
+    {
+      "turn_id": 23,
+      "trace_source": "trace_rich_4077.json",
+      "step_id": 9,
+      "tool_call": "edit_file",
+      "preamble_snippet": "I should explore the codebase and read the related module implementation.",
+      "preamble_tokens": 209,
+      "action_tokens": 73,
+      "total_turn_tokens": 417
+    },
+    {
+      "turn_id": 24,
+      "trace_source": "trace_rich_3944.json",
+      "step_id": 10,
+      "tool_call": "search_similar_code",
+      "preamble_snippet": "Searching the repository for the class definition and its attributes.",
+      "preamble_tokens": 264,
+      "action_tokens": 92,
+      "total_turn_tokens": 357
+    },
+    {
+      "turn_id": 25,
+      "trace_source": "trace_fastapi_15589.json",
+      "step_id": 11,
+      "tool_call": "get_status",
+      "preamble_snippet": "Reading lines 1 to 80 of the target file to locate the method.",
+      "preamble_tokens": 361,
+      "action_tokens": 93,
+      "total_turn_tokens": 617
+    },
+    {
+      "turn_id": 26,
+      "trace_source": "trace_rich_4077.json",
+      "step_id": 12,
+      "tool_call": "read_file",
+      "preamble_snippet": "Let me run grep to find occurrences of the function across the repository.",
+      "preamble_tokens": 294,
+      "action_tokens": 115,
+      "total_turn_tokens": 649
+    },
+    {
+      "turn_id": 27,
+      "trace_source": "trace_rich_3944.json",
+      "step_id": 13,
+      "tool_call": "run_command",
+      "preamble_snippet": "Examining the stack trace to determine why the test failed.",
+      "preamble_tokens": 295,
+      "action_tokens": 102,
+      "total_turn_tokens": 484
+    },
+    {
+      "turn_id": 28,
+      "trace_source": "trace_fastapi_15589.json",
+      "step_id": 14,
+      "tool_call": "edit_file",
+      "preamble_snippet": "The test indicates a missing parameter in the constructor; let me verify.",
+      "preamble_tokens": 124,
+      "action_tokens": 170,
+      "total_turn_tokens": 330
+    },
+    {
+      "turn_id": 29,
+      "trace_source": "trace_rich_4077.json",
+      "step_id": 1,
+      "tool_call": "search_similar_code",
+      "preamble_snippet": "Let me inspect the git diff to understand previous commits.",
+      "preamble_tokens": 265,
+      "action_tokens": 77,
+      "total_turn_tokens": 449
+    },
+    {
+      "turn_id": 30,
+      "trace_source": "trace_rich_3944.json",
+      "step_id": 2,
+      "tool_call": "get_status",
+      "preamble_snippet": "I will now run the command to verify the output in the terminal.",
+      "preamble_tokens": 287,
+      "action_tokens": 127,
+      "total_turn_tokens": 445
+    },
+    {
+      "turn_id": 31,
+      "trace_source": "trace_fastapi_15589.json",
+      "step_id": 3,
+      "tool_call": "read_file",
+      "preamble_snippet": "I will begin by inspecting the directory structure to locate the issue.",
+      "preamble_tokens": 374,
+      "action_tokens": 136,
+      "total_turn_tokens": 523
+    },
+    {
+      "turn_id": 32,
+      "trace_source": "trace_rich_4077.json",
+      "step_id": 4,
+      "tool_call": "run_command",
+      "preamble_snippet": "Let me check the test files to see how the feature is tested.",
+      "preamble_tokens": 230,
+      "action_tokens": 144,
+      "total_turn_tokens": 516
+    },
+    {
+      "turn_id": 33,
+      "trace_source": "trace_rich_3944.json",
+      "step_id": 5,
+      "tool_call": "edit_file",
+      "preamble_snippet": "I should explore the codebase and read the related module implementation.",
+      "preamble_tokens": 365,
+      "action_tokens": 92,
+      "total_turn_tokens": 341
+    },
+    {
+      "turn_id": 34,
+      "trace_source": "trace_fastapi_15589.json",
+      "step_id": 6,
+      "tool_call": "search_similar_code",
+      "preamble_snippet": "Searching the repository for the class definition and its attributes.",
+      "preamble_tokens": 228,
+      "action_tokens": 131,
+      "total_turn_tokens": 373
+    },
+    {
+      "turn_id": 35,
+      "trace_source": "trace_rich_4077.json",
+      "step_id": 7,
+      "tool_call": "get_status",
+      "preamble_snippet": "Reading lines 1 to 80 of the target file to locate the method.",
+      "preamble_tokens": 314,
+      "action_tokens": 108,
+      "total_turn_tokens": 512
+    },
+    {
+      "turn_id": 36,
+      "trace_source": "trace_rich_3944.json",
+      "step_id": 8,
+      "tool_call": "read_file",
+      "preamble_snippet": "Let me run grep to find occurrences of the function across the repository.",
+      "preamble_tokens": 286,
+      "action_tokens": 133,
+      "total_turn_tokens": 479
+    },
+    {
+      "turn_id": 37,
+      "trace_source": "trace_fastapi_15589.json",
+      "step_id": 9,
+      "tool_call": "run_command",
+      "preamble_snippet": "Examining the stack trace to determine why the test failed.",
+      "preamble_tokens": 308,
+      "action_tokens": 112,
+      "total_turn_tokens": 440
+    },
+    {
+      "turn_id": 38,
+      "trace_source": "trace_rich_4077.json",
+      "step_id": 10,
+      "tool_call": "edit_file",
+      "preamble_snippet": "The test indicates a missing parameter in the constructor; let me verify.",
+      "preamble_tokens": 353,
+      "action_tokens": 117,
+      "total_turn_tokens": 516
+    },
+    {
+      "turn_id": 39,
+      "trace_source": "trace_rich_3944.json",
+      "step_id": 11,
+      "tool_call": "search_similar_code",
+      "preamble_snippet": "Let me inspect the git diff to understand previous commits.",
+      "preamble_tokens": 286,
+      "action_tokens": 103,
+      "total_turn_tokens": 563
+    },
+    {
+      "turn_id": 40,
+      "trace_source": "trace_fastapi_15589.json",
+      "step_id": 12,
+      "tool_call": "get_status",
+      "preamble_snippet": "I will now run the command to verify the output in the terminal.",
+      "preamble_tokens": 314,
+      "action_tokens": 65,
+      "total_turn_tokens": 570
+    },
+    {
+      "turn_id": 41,
+      "trace_source": "trace_rich_4077.json",
+      "step_id": 13,
+      "tool_call": "read_file",
+      "preamble_snippet": "I will begin by inspecting the directory structure to locate the issue.",
+      "preamble_tokens": 361,
+      "action_tokens": 130,
+      "total_turn_tokens": 478
+    },
+    {
+      "turn_id": 42,
+      "trace_source": "trace_rich_3944.json",
+      "step_id": 14,
+      "tool_call": "run_command",
+      "preamble_snippet": "Let me check the test files to see how the feature is tested.",
+      "preamble_tokens": 233,
+      "action_tokens": 110,
+      "total_turn_tokens": 484
+    }
+  ]
+}
