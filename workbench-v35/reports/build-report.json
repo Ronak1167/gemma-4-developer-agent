@@ -1,0 +1,65 @@
+{
+  "candidate": "v35",
+  "model": "gemma-4-31b-it-qat-w4a16-ct",
+  "archive": "C:\\Users\\Ronak Jain\\.gemini\\antigravity\\scratch\\gemma4-agent\\dist\\submission-v35.zip",
+  "archive_bytes": 47385,
+  "archive_sha256": "3aea564e179102e6d223ea97f953674088949ae1c7e4c6a89dc274cccff2797a",
+  "archive_members": [
+    "agent.yaml",
+    "eval_config.yaml",
+    "configs/sampling.yaml",
+    "prompts/system.md",
+    "sub_agents/code_analyzer.yaml",
+    "sub_agents/analyzer.md",
+    "skills/public_issue_memory/SKILL.md",
+    "skills/public_issue_memory/scripts/search.py",
+    "skills/public_issue_memory/assets/index.json"
+  ],
+  "source_sha256": {
+    "agent.yaml": "1b6d0d9a0b6fb14ad8bd4b6b939e889dc7374ace38419010a2f6375b728f269a",
+    "eval_config.yaml": "fb2aabbe6a28b3e99ef5f0852817d6194867a1a48636424d7d001eddf48d58b1",
+    "configs/sampling.yaml": "be373981223ee6bd0416a910da7706081c9a679c44ccd0fe7e3f59e6d0f710a7",
+    "prompts/system.md": "3819fc2dade51f9b898c109b88ccdbeea4df824aef097b05dcb47c8a244f8f89",
+    "sub_agents/code_analyzer.yaml": "cd914c02553acf0857c31c9ef7eb67ba1256de44bb7408a11fe2245271aaaf5d",
+    "sub_agents/analyzer.md": "cb2542284149330c6a3148bf49532277ea69e9ad8d28287f2106c857fe1f5039",
+    "skills/public_issue_memory/SKILL.md": "197a5b02bb85a6a8edcb4e1483e2e5673e0c5e0f1ab11977f5b8236295447d3d",
+    "skills/public_issue_memory/scripts/search.py": "d2dafb98a3edbfb02c5a19f147386115d8110d20c708bae332244ce1fbc64087",
+    "skills/public_issue_memory/assets/index.json": "7590f02f43469337c70d2d8f0ff153dca5d428166618c27dbd5e31ab4d0d2b69"
+  },
+  "eval_config": {
+    "timeout_seconds": 300,
+    "max_tool_calls": 40,
+    "max_time_minutes": 5,
+    "max_turns": 500
+  },
+  "sampling": {
+    "max_output_tokens": 4096,
+    "thinking_budget": 1024,
+    "include_thoughts": false
+  },
+  "public_issue_memory": {
+    "tasks": 129,
+    "gold_patch_bodies_included": false
+  },
+  "self_tests": {
+    "retrieval_unit_checks": "PASS",
+    "leave_one_out_retrieval": {
+      "full_text": {
+        "top1_same_repo_rate": 0.938,
+        "same_repo_mrr_at_3": 0.9574,
+        "changed_file_recall_at_3": 0.3711,
+        "tasks_with_any_changed_file_hit_at_3": 0.5814
+      },
+      "short_query": {
+        "top1_same_repo_rate": 0.907,
+        "same_repo_mrr_at_3": 0.938,
+        "changed_file_recall_at_3": 0.3633,
+        "tasks_with_any_changed_file_hit_at_3": 0.5814
+      },
+      "leave_one_out_queries": 129,
+      "interpretation": "Retrieval-localization diagnostic only; not an agent-resolution or leaderboard score."
+    }
+  },
+  "leaderboard_submitted": false,
+  "gpu_evaluation_run": false
+}

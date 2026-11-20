@@ -1,0 +1,16 @@
+name: code_analyzer_agent
+description: Read-only localization of the active issue using source code and the repository graph
+model: gemma-4-31b-it-qat-w4a16-ct
+instruction: !include analyzer.md
+tools:
+  - read_file
+  - search_similar_code
+  - get_code_neighbors
+  - get_code_subgraph
+generate_content_config:
+  temperature: 0.1
+  top_p: 0.95
+  max_output_tokens: 4096
+  thinking_config:
+    thinking_budget: 1024
+    include_thoughts: false

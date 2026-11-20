@@ -1,0 +1,7 @@
+# Preserve the previously proven 4096/1024 reasoning envelope and strip thoughts between turns.
+temperature: 0.1
+top_p: 0.95
+max_output_tokens: 4096
+thinking_config:
+  thinking_budget: 1024
+  include_thoughts: false
