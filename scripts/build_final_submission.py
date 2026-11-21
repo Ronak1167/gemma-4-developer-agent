@@ -1,20 +1,11 @@
 import hashlib
+import shutil
 import zipfile
 from pathlib import Path
 
 
-def main():
-    root = Path(__file__).resolve().parent.parent
-    target = root / "dist" / "submission-final.zip"
-    files = [
-        ("agent.yaml", root / "agent" / "agent.yaml"),
-        ("eval_config.yaml", root / "agent" / "eval_config.yaml"),
-        ("configs/sampling.yaml", root / "agent" / "configs" / "sampling.yaml"),
-        ("prompts/system.md", root / "agent" / "prompts" / "system.md"),
-    ]
-    for _, path in files:
-        if not path.is_file():
-            raise FileNotFoundError(path)
+def create_deterministic_zip(target: Path, files: list[tuple[str, Path]]):
+    target.parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(target, "w") as zf:
         for arcname, path in files:
             info = zipfile.ZipInfo(arcname, date_time=(1980, 1, 1, 0, 0, 0))
@@ -29,10 +20,44 @@ def main():
         assert zf.namelist() == [name for name, _ in files]
         for name, path in files:
             assert zf.read(name) == path.read_bytes()
-    print(f"Archive: {target}")
-    print(f"Size: {len(data)} bytes")
-    print(f"SHA-256: {hashlib.sha256(data).hexdigest()}")
-    print("Deterministic archive build and source-byte comparison passed.")
+    return hashlib.sha256(data).hexdigest(), len(data)
+
+
+def main():
+    root = Path(__file__).resolve().parent.parent
+    dist = root / "dist"
+    files = [
+        ("agent.yaml", root / "agent" / "agent.yaml"),
+        ("eval_config.yaml", root / "agent" / "eval_config.yaml"),
+        ("configs/sampling.yaml", root / "agent" / "configs" / "sampling.yaml"),
+        ("prompts/system.md", root / "agent" / "prompts" / "system.md"),
+    ]
+    for _, path in files:
+        if not path.is_file():
+            raise FileNotFoundError(path)
+
+    targets = [
+        dist / "submission-final.zip",
+        dist / "submission.zip",
+        dist / "submission-v30.zip",
+        dist / "kaggle_dataset_optimized_upload" / "submission-final.zip",
+        dist / "kaggle_dataset_final" / "submission-final.zip",
+    ]
+
+    for target in targets:
+        digest, size = create_deterministic_zip(target, files)
+        print(f"Archive: {target.name} ({size} bytes, SHA-256: {digest[:16]}...)")
+
+    # Also update unpacked source files in datasets
+    for ds_folder in ["kaggle_dataset_optimized_upload", "kaggle_dataset_final"]:
+        dest = dist / ds_folder
+        if dest.is_dir():
+            for arcname, src_path in files:
+                out_path = dest / arcname
+                out_path.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(src_path, out_path)
+
+    print("All candidate v30 archives and datasets synchronized successfully.")
 
 
 if __name__ == "__main__":

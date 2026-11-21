@@ -1,9 +1,8 @@
-name: gemma4_swe_agent_v34
-description: Evidence-first Gemma 4 software engineering agent with read-only public-issue retrieval
+# agent.yaml — Gemma 4 Developer Agent Competition
+name: gemma4_swe_agent
+description: "Minimal SWE baseline agent for the Gemma 4 Developer Agent Competition"
 model: gemma-4-31b-it-qat-w4a16-ct
 instruction: !include prompts/system.md
-skills:
-  - skills/public_issue_memory
 tools:
   - run_command
   - submit_patch
@@ -14,9 +13,4 @@ tools:
   - get_code_neighbors
   - search_similar_code
   - get_code_subgraph
-  - load_skill
-  - run_skill_script
-  - agent_tool:
-      config_path: sub_agents/code_analyzer.yaml
-      skip_summarization: true
 generate_content_config: !include configs/sampling.yaml

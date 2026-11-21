@@ -1,7 +1,7 @@
-# Preserve the previously proven 4096/1024 reasoning envelope and strip thoughts between turns.
+# Sampling configuration for Candidate v36
 temperature: 0.1
 top_p: 0.95
-max_output_tokens: 4096
+max_output_tokens: 8192
 thinking_config:
-  thinking_budget: 1024
+  thinking_budget: 2048
   include_thoughts: false
